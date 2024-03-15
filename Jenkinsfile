@@ -46,8 +46,8 @@ pipeline {
                     // Check if there are changes
                     def changes = currentBuild.changeSets
                     if (changes.size() > 0) {
-                    echo 'Delivering....'
                      def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
+                     echo 'Delivering....'
                      echo "Changes in this build:"
                      echo "${changeLog}"
                     } else {
