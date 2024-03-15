@@ -11,14 +11,7 @@ pipeline {
         stage('Checkout') {
                 steps {
                     // Checkout the repository
-                    checkout([\
-                    $class: 'GitSCM',\
-                     branches: [[name: '*/main']],\
-                     doGenerateSubmoduleConfigurations: false,\
-                     extensions: [],\
-                     submoduleCfg: [],\
-                     userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]\
-                    ])
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]])
                 }
             }
     stage ("Build"){
