@@ -16,7 +16,7 @@ pipeline {
 
 
                                 // Check if there are changes
-//                                 def changes = currentBuild.changeSets
+                                def changes = currentBuild.changeSets
                                 if (true) {
                                     echo 'There are changes in the repository!'
                                 def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
