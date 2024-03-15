@@ -12,21 +12,16 @@ pipeline {
         stage('Deliver') {
                     steps {
                         script {
-                            try {
+                            // Check if there are changes
+                            def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
 
-
-                                // Check if there are changes
-                                def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
-                                def changes = currentBuild.changeSets
-                                if (true) {
-                                    echo 'There are changes in the repository!'
-                                    echo "Changes in this build:"
-                                    echo "${changeLog}"
-                                } else {
-                                    echo 'No changes detected. Skipping delivery.'
-                                }
-                            } catch (Exception e) {
-                                echo "Error occurred: ${e.message}"
+                            if (true) {
+                            def changes = currentBuild.changeSets
+                                echo 'There are changes in the repository!'
+                                echo "Changes in this build:"
+                                echo "${changeLog}"
+                            } else {
+                                echo 'No changes detected. Skipping delivery.'
                             }
                         }
                     }
