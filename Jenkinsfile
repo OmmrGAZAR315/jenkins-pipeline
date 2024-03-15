@@ -8,19 +8,19 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     stages {
-    //     stage('Checkout') {
-            //     steps {
-            //         // Checkout the repository
-            //         checkout([
-            //         $class: 'GitSCM',
-            //          branches: [[name: '*/main']],
-            //          doGenerateSubmoduleConfigurations: false,
-            //          extensions: [],
-            //          submoduleCfg: [],
-            //          userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]
-            //         ])
-            //     }
-            // }
+        stage('Checkout') {
+                steps {
+                    // Checkout the repository
+                    checkout([
+                    $class: 'GitSCM',
+                     branches: [[name: '*/main']],
+                     doGenerateSubmoduleConfigurations: false,
+                     extensions: [],
+                     submoduleCfg: [],
+                     userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]
+                    ])
+                }
+            }
     stage ("Build"){
             steps {
                 echo "Building The job"
@@ -46,8 +46,8 @@ pipeline {
                     // Check if there are changes
                     def changes = currentBuild.changeSets
                     if (changes.size() > 0) {
+                    echo 'There is changes in the repository!"
                      def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
-                     echo 'Delivering....'
                      echo "Changes in this build:"
                      echo "${changeLog}"
                     } else {
