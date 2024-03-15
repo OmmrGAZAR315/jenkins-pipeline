@@ -7,13 +7,7 @@ pipeline {
     triggers {
         pollSCM 'H/5 * * * *'
     }
-    stages {
-        stage('Checkout') {
-                steps {
-                    // Checkout the repository
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]])
-                }
-            }
+
     stage ("Build"){
             steps {
                 echo "Building The job"
