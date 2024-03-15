@@ -8,27 +8,51 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     stages {
-            stage('Checkout') {
+    //     stage('Checkout') {
+            //     steps {
+            //         // Checkout the repository
+            //         checkout([
+            //         $class: 'GitSCM',
+            //          branches: [[name: '*/main']],
+            //          doGenerateSubmoduleConfigurations: false,
+            //          extensions: [],
+            //          submoduleCfg: [],
+            //          userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]
+            //         ])
+            //     }
+            // }
+    stage ("Build"){
             steps {
-                // Checkout the repository
-                checkout([
-                $class: 'GitSCM',
-                 branches: [[name: '*/main']],
-                 doGenerateSubmoduleConfigurations: false,
-                 extensions: [],
-                 submoduleCfg: [],
-                 userRemoteConfigs: [[url: 'https://github.com/OmmrGAZAR315/jenkins-pipeline.git']]
-                ])
+                echo "Building The job"
+                sh '''
+                cd myapp
+                pip install -r requirements.txt
+                '''
             }
         }
-
-        stage('Display Changes') {
+        stage("Test"){
+            steps {
+                echo "Testing The job"
+                sh '''
+                cd myapp
+                python3 hello.py
+                python3 hello.py --name='DR.Youssef Senousy'
+                '''
+            }
+        }
+        stage('Deliver') {
             steps {
                 script {
-                    // Get changes from the repository
-                    def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
-                    echo "Changes in this build:"
-                    echo "${changeLog}"
+                    // Check if there are changes
+                    def changes = currentBuild.changeSets
+                    if (changes.size() > 0) {
+                    echo 'Delivering....'
+                     def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
+                     echo "Changes in this build:"
+                     echo "${changeLog}"
+                    } else {
+                    echo 'No changes detected. Skipping delivery.'
+                    }
                 }
             }
         }
