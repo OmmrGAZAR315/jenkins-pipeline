@@ -9,15 +9,25 @@ pipeline {
         //     }
         // }
         
-        stage('Display Changes') {
-            steps {
-                script {
-                    // Use git commands to fetch changes
-                    def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
-                    echo "Changes in this build:"
-                    echo "${changeLog}"
+        stage('Deliver') {
+                    steps {
+                        script {
+                            try {
+                                // Check if there are changes
+                                def changes = currentBuild.changeSets
+                                if (changes.size() > 0) {
+                                    echo 'There are changes in the repository!'
+                                    def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
+                                    echo "Changes in this build:"
+                                    echo "${changeLog}"
+                                } else {
+                                    echo 'No changes detected. Skipping delivery.'
+                                }
+                            } catch (Exception e) {
+                                echo "Error occurred: ${e.message}"
+                            }
+                        }
+                    }
                 }
-            }
-        }
     }
 }
