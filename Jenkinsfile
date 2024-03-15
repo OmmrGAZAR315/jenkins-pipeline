@@ -13,13 +13,14 @@ pipeline {
                     steps {
                         script {
                             try {
-                                def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
 
 
                                 // Check if there are changes
-                                def changes = currentBuild.changeSets
-                                if (changes.size() > 0) {
+//                                 def changes = currentBuild.changeSets
+                                if (true) {
                                     echo 'There are changes in the repository!'
+                                def changeLog = sh(script: 'git log --pretty=format:"%h - %an, %ar : %s"', returnStdout: true).trim()
+
                                     echo "Changes in this build:"
                                     echo "${changeLog}"
                                 } else {
